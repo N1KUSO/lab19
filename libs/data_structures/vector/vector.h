@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
+#include <stdbool.h>
+#include <assert.h>
 
 typedef struct vector {
     int *data;
@@ -25,27 +27,24 @@ vector createVector(size_t n) {
     return vec;
 }
 
-void reserve(vector *vec, size_t newCapacity) {
+void reserve(vector *v, size_t newCapacity) {
     if (newCapacity == 0) {
-        free(vec->data);
-        vec->data = NULL;
-        vec->capacity = 0;
-        vec->size = 0;
-    } else if (newCapacity < vec->size) {
-        vec->capacity = vec->size = newCapacity;
-        vec->data = (int *) realloc(vec->data, newCapacity * sizeof(int));
-        if (!vec->data) {
-            fprintf(stderr, "bad alloc\n");
-            exit(1);
-        }
+        free(v->data);
+        v->data = NULL;
     } else {
-        vec->capacity = newCapacity;
-        vec->data = (int *) realloc(vec->data, newCapacity * sizeof(int));
-        if (!vec->data) {
+        int *newData = realloc(v->data, newCapacity * sizeof(int));
+        if (newData == NULL) {
             fprintf(stderr, "bad alloc\n");
             exit(1);
         }
+        v->data = newData;
     }
+
+    if (newCapacity < v->size) {
+        v->size = newCapacity;
+    }
+
+    v->capacity = newCapacity;
 }
 
 void clear(vector *v) {
@@ -61,6 +60,36 @@ void deleteVector(vector *v) {
     v->data = NULL;
     v->size = 0;
     v->capacity = 0;
+}
+
+bool isEmpty(vector *v) {
+    return v->size == 0;
+}
+
+bool isFull(vector *v) {
+    return v->size >= v->capacity;
+}
+
+int getVectorValue(vector *v, size_t i) {
+    return v->data[i];
+}
+
+void pushBack(vector *v, int x) {
+    if (isFull(v)) {
+        size_t newCapacity = (v->capacity == 0) ? 1 : v->capacity * 2;
+        reserve(v, newCapacity);
+    }
+
+    v->data[v->size++] = x;
+}
+
+void popBack(vector *v) {
+    if (v->size == 0) {
+        fprintf(stderr, "vector empty\n");
+        exit(1);
+    }
+
+    --(v->size);
 }
 
 #endif
