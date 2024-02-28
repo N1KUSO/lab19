@@ -3,4 +3,5 @@ project(lab14 C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(lab14 main.c)
+add_executable(lab14 main.c
+        libs/data_structures/vector/vector.h)
