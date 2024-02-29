@@ -96,7 +96,8 @@
 			"name" : "Header Files",
 			"sourceIndexes" : 
 			[
-				1
+				1,
+				2
 			]
 		}
 	],
@@ -111,6 +112,11 @@
 		{
 			"backtrace" : 1,
 			"path" : "libs/data_structures/vector/vector.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "libs/data_structures/vector/vectorVoid.h",
 			"sourceGroupIndex" : 1
 		}
 	],
